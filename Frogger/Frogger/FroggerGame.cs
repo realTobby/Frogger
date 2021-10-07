@@ -12,11 +12,13 @@ namespace Frogger
         private int window_height { get; set; } = 0;
         private List<WorldTile> world;
         private bool _generateIsGrass = true;
+        private FrogPlayer frog;
 
         public FroggerGame(int windowWidth, int windowHeight)
         {
             window_width = windowWidth;
             window_height = windowHeight;
+            frog = new FrogPlayer(5*32, 8 * 32);
             Raylib.InitWindow(windowWidth, windowHeight, "Frogger");
 
             CreateWorld();
@@ -29,7 +31,7 @@ namespace Frogger
 
             int tileWidth = 32;
             int tileHeight = 32;
-            for(int y = window_height; y > 0; y-= tileHeight)
+            for(int y = window_height-32; y > 0; y-= tileHeight)
             {
                 GenerateNewLine(y);
             }
@@ -42,16 +44,23 @@ namespace Frogger
             {
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.WHITE);
+
                 // Game Logic goes here
-
                 DrawWorld();
-
                 HandleInput();
+                HandleFrog();
 
                 Raylib.EndDrawing();
             }
 
             Raylib.CloseWindow();
+        }
+
+        private void HandleFrog()
+        {
+
+            Raylib.DrawRectangle(frog.WorldPosition.X, frog.WorldPosition.Y, 24, 24, Color.PURPLE);
+
         }
 
         private void MoveWorld()
@@ -83,9 +92,19 @@ namespace Frogger
 
         private void HandleInput()
         {
-            if(Raylib.IsKeyPressed(KeyboardKey.KEY_UP))
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_UP))
             {
                 MoveWorld();
+            }
+
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_LEFT))
+            {
+                frog.WorldPosition.X -= 32;
+            }
+
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_RIGHT))
+            {
+                frog.WorldPosition.X += 32;
             }
         }
 
