@@ -6,7 +6,7 @@ namespace Frogger
     {
         static void Main(string[] args)
         {
-            FroggerGame fg = new FroggerGame(300, 300);
+            FroggerGame fg = new FroggerGame(352, 289);
             fg.GameLoop();
         }
     }
